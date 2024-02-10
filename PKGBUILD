@@ -24,6 +24,13 @@ pkgver() {
     git describe --tags --long | sed 's/^v//' | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
+prepare() {
+    cd "$_gitpkgname"
+    echo $PWD
+    git apply ../../00-support_bolt.patch
+    cd -
+}
+
 build() {
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -B build -S "$_gitpkgname"
     cmake --build build
